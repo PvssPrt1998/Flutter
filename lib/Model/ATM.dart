@@ -55,78 +55,75 @@ class ATM {
 
   List<String> issueBillsHelper(double sum) {
 
-    Map<double, int> billMap = {};
-    List<double> denomenationSortedList = [];
-
+    List<Bill> forReturn = [];
+    List<Bill> moneyList = [];
     for (var element in bills) {
-      billMap[element.denomination] = element.amount;
-      denomenationSortedList.add(element.denomination);
+      moneyList.add(Bill(element.denomination, element.amount));
     }
 
-    denomenationSortedList.sort((a,b) => a.compareTo(b));
+    moneyList.sort((a,b) => a.denomination.compareTo(b.denomination));
+
+
+    for (var element in moneyList) {
+      developer.log('${element.denomination} X ${element.amount}');
+    }
 
     var issueSum = sum;
-    List<double> denominationForReturn = [];
-    Map<double, int> mapDenominationAmount = {};
 
     while(issueSum > 0) {
-      var billIndex = search(denomenationSortedList, issueSum, denomenationSortedList.length - 1);
+      var billIndex = search(moneyList, issueSum, moneyList.length - 1);
       if (billIndex < 0) {
         return [];
       }
-      var denomination = denomenationSortedList[billIndex];
+      var denomination = moneyList[billIndex].denomination;
       issueSum = issueSum - denomination;
-
-      if (!denominationForReturn.contains(denomination)) {
-        denominationForReturn.add(denomination);
-        mapDenominationAmount[denomination] = 1;
-      } else {
-        var c = mapDenominationAmount[denomination];
-        if (c != null) {
-          c++;
-          mapDenominationAmount[denomination] = c;
+      bool isH = false;
+      var index = -1;
+      for (var i=0; i<forReturn.length; i++) {
+        if (forReturn[i].denomination == denomination) {
+          isH = true;
+          index = i;
         }
       }
 
-      var d = billMap[denomination];
-      if (d != null) {
-        d--;
-        if (d != 0) {
-          billMap[denomination] = d;
-        } else {
-          billMap.remove(denomination);
-          denomenationSortedList.remove(denomination);
-        }
+      for (var element in forReturn) {
+        developer.log('${element.denomination} X1 ${element.amount}');
+      }
+
+      if(!isH) {
+        forReturn.add(Bill(denomination,1));
+        developer.log('1499');
+      } else {
+        forReturn[index].amount++;
+        developer.log('1488');
+      }
+
+      for (var element in forReturn) {
+        developer.log('${element.denomination} X1 ${element.amount}');
+      }
+
+      moneyList.firstWhere((element) => element.denomination == denomination)
+          .amount--;
+      bills.firstWhere((element) => element.denomination == denomination)
+          .amount--;
+      if (moneyList.firstWhere((element) => element.denomination == denomination)
+          .amount == 0) {
+        var a = moneyList.firstWhere((element) =>
+        element.denomination == denomination);
+        moneyList.remove(a);
+        var b = bills.firstWhere((element) =>
+        element.denomination == denomination);
+        bills.remove(b);
       }
     }
 
     if (issueSum > 0) { return []; }
 
-    List<String> listForReturn = [];
-
-    for(var i = 0; i < denominationForReturn.length; i++) {
-      var denomination = denominationForReturn[i];
-      var amount = mapDenominationAmount[denominationForReturn[i]];
-      if (amount != null) {
-        var r = amount;
-        listForReturn.add('${denomination.truncate()} X ${r}');
-      }
-    }
-
-    for (var item in bills) {
-      if (!denomenationSortedList.contains(item.denomination))  {
-        bills.remove(item);
-      } else {
-        var amount = billMap[item.denomination];
-        if (amount != null) {item.amount = amount; }
-      }
-    }
-
-    return listForReturn;
+    return forReturn.map((e) => '${e.denomination} X ${ e.amount }').toList();
   }
-
-  int search(List<double> list, double sum, int end) {
-    if (sum >= list[end]) {
+//List<double>
+  int search(List<Bill> list, double sum, int end) {
+    if (sum >= list[end].denomination) {
       return end;
     } else {
       if (end == 0) {
