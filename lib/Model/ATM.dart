@@ -1,5 +1,3 @@
-import 'dart:developer' as developer;
-
 import 'Bill.dart';
 
 class ATM {
@@ -63,11 +61,6 @@ class ATM {
 
     moneyList.sort((a,b) => a.denomination.compareTo(b.denomination));
 
-
-    for (var element in moneyList) {
-      developer.log('${element.denomination} X ${element.amount}');
-    }
-
     var issueSum = sum;
 
     while(issueSum > 0) {
@@ -86,20 +79,10 @@ class ATM {
         }
       }
 
-      for (var element in forReturn) {
-        developer.log('${element.denomination} X1 ${element.amount}');
-      }
-
       if(!isH) {
         forReturn.add(Bill(denomination,1));
-        developer.log('1499');
       } else {
         forReturn[index].amount++;
-        developer.log('1488');
-      }
-
-      for (var element in forReturn) {
-        developer.log('${element.denomination} X1 ${element.amount}');
       }
 
       moneyList.firstWhere((element) => element.denomination == denomination)
@@ -121,7 +104,7 @@ class ATM {
 
     return forReturn.map((e) => '${e.denomination} X ${ e.amount }').toList();
   }
-//List<double>
+
   int search(List<Bill> list, double sum, int end) {
     if (sum >= list[end].denomination) {
       return end;
