@@ -102,7 +102,7 @@ class ATM {
 
     if (issueSum > 0) { return []; }
 
-    return forReturn.map((e) => '${e.denomination} X ${ e.amount }').toList();
+    return forReturn.map((e) => '${e.denomination.truncate()} X ${ e.amount.truncate() }').toList();
   }
 
   int search(List<Bill> list, double sum, int end) {
