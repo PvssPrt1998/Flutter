@@ -10,9 +10,6 @@ class TextEdited extends ATMEvent {
 }
 
 class ATMBalanceBloc extends Bloc<ATMEvent, List<String>> {
-  //ATM atm = ATM();
-  var text = '';
-
   ATMBalanceBloc(ATM atm) : super(atm.billsPacksList()) {
     on<IssueButtonPressed>((event, emit) {
       return emit(atm.billsPacksList());
@@ -29,6 +26,16 @@ class ATMIssueBloc extends Bloc<ATMEvent, List<String>> {
     });
     on<TextEdited>((event, emit) {
       atm.text = event.text;
+    });
+  }
+}
+
+class ATMIssueTextFieldBloc extends Bloc<ATMEvent, bool> {
+  var text = '';
+  ATMIssueTextFieldBloc(ATM atm) : super(false) {
+    on<TextEdited>((event, emit) {
+      atm.text = event.text;
+      return atm.text == '' ? emit(false) : emit(true);
     });
   }
 }

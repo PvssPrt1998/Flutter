@@ -1,6 +1,8 @@
 import 'package:atm/atmPage/mainpagecolumns/errorMessageForUserItem.dart';
 import 'package:flutter/material.dart';
 import 'package:atm/atmPage/mainpagecolumns/atmbillslist/atmbillslist.dart';
+import '../../../ATMBloc.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 abstract class WidgetFactory {
   ErrorMessageType createErrorMessageProduct();
@@ -67,4 +69,37 @@ class IssuedBills extends NormalType {
   Widget createWidget(List<String> list) {
     return atmBillList(list, 'Банкомат выдал следующие купюры');
   }
+}
+
+Widget billBalanceWidget() {
+  return BlocBuilder<ATMBalanceBloc, List<String>>(
+    //bloc: bloc,
+      builder: (context, stateString) {
+        if (stateString.isEmpty) {
+          return BillBalanceFactory()
+              .createErrorMessageProduct()
+              .createErrorMessageWidget();
+        } else {
+          return BillBalanceFactory()
+              .createNormalAbstractProduct()
+              .createWidget(stateString);
+        }
+      }
+  );
+}
+
+Widget billIssuedWidget() {
+  return BlocBuilder<ATMIssueBloc, List<String>>(
+      builder: (context, stateString) {
+        if (stateString.isEmpty) {
+          return IssuedBillsFactory()
+              .createErrorMessageProduct()
+              .createErrorMessageWidget();
+        } else {
+          return IssuedBillsFactory()
+              .createNormalAbstractProduct()
+              .createWidget(stateString);
+        }
+      }
+  );
 }

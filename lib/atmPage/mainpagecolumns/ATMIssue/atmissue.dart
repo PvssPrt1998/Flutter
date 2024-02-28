@@ -17,7 +17,7 @@ Widget buildATMIssue(BuildContext context) {
 Widget atmIssueColumn(BuildContext context) {
   return Column(
     children: [
-      Container(
+      SizedBox(
         height: 180,
         width: double.infinity,
         child: Stack(
@@ -65,10 +65,49 @@ Widget enterSumTitleText(BuildContext context) {
   );
 }
 
+Widget suffixForSumTextField(bool state) {
+  return state == true
+    ? const Text('руб', style: TextStyle(color: Colors.white))
+    : const Text('');
+}
+
 Widget sumTextField(BuildContext context) {
   return SizedBox(
     width: 200,
-    child: TextFormField(
+    child: BlocBuilder<ATMIssueTextFieldBloc, bool>(
+      builder: (context, suffixState) {
+        return  TextFormField(
+          keyboardType: TextInputType.number,
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly
+          ],
+          onChanged: (value) {
+            context.read<ATMIssueTextFieldBloc>().add(TextEdited(value));
+          },
+          cursorWidth: 0,
+          decoration: InputDecoration(
+              suffix: suffixForSumTextField(suffixState),
+              contentPadding: EdgeInsets.all(0),
+              enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Color.fromRGBO(255, 255, 255, 0.4)),
+              ),
+              focusedBorder: UnderlineInputBorder(
+                  borderSide: BorderSide(color: Color.fromRGBO(255, 255, 255, 0.4))
+              )
+          ),
+          textAlign: TextAlign.center,
+          style: TextStyle(
+            height: 1.2,
+            color: Colors.white,
+            fontSize: 30,
+            fontWeight: FontWeight.w500,
+            fontFamily: 'SF-Pro',
+          ),
+        );
+      }
+    )
+    /*
+    TextFormField(
       keyboardType: TextInputType.number,
       inputFormatters: <TextInputFormatter>[
         FilteringTextInputFormatter.digitsOnly
@@ -78,7 +117,7 @@ Widget sumTextField(BuildContext context) {
       },
       cursorWidth: 0,
       decoration: const InputDecoration(
-        suffix: Text('руб', style: TextStyle(color: Colors.white),),
+        suffix: Text('руб', style: TextStyle(color: Colors.white)),
         contentPadding: EdgeInsets.all(0),
           enabledBorder: UnderlineInputBorder(
             borderSide: BorderSide(color: Color.fromRGBO(255, 255, 255, 0.4)),
@@ -96,6 +135,7 @@ Widget sumTextField(BuildContext context) {
         fontFamily: 'SF-Pro',
       ),
     ),
+  */
   );
 }
 

@@ -25,6 +25,9 @@ class _ATMPageState extends State<ATMPage> {
           BlocProvider(
               create: (_) => ATMBalanceBloc(atm)
           ),
+          BlocProvider(
+              create: (_) => ATMIssueTextFieldBloc(atm)
+          )
         ],
         child: Scaffold(
         extendBodyBehindAppBar: true,

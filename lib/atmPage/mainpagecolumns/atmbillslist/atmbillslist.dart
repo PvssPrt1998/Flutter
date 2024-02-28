@@ -1,41 +1,4 @@
-import 'package:atm/atmPage/mainpagecolumns/widgetFactory.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import '../../../ATMBloc.dart';
-
-Widget billBalanceWidget() {
-  return BlocBuilder<ATMBalanceBloc, List<String>>(
-    //bloc: bloc,
-    builder: (context, stateString) {
-      if (stateString.isEmpty) {
-        return BillBalanceFactory()
-            .createErrorMessageProduct()
-            .createErrorMessageWidget();
-      } else {
-        return BillBalanceFactory()
-            .createNormalAbstractProduct()
-            .createWidget(stateString);
-      }
-    }
-  );
-}
-
-Widget billIssuedWidget() {
-  return BlocBuilder<ATMIssueBloc, List<String>>(
-      //bloc: bloc,
-      builder: (context, stateString) {
-        if (stateString.isEmpty) {
-          return IssuedBillsFactory()
-              .createErrorMessageProduct()
-              .createErrorMessageWidget();
-        } else {
-          return IssuedBillsFactory()
-              .createNormalAbstractProduct()
-              .createWidget(stateString);
-        }
-      }
-  );
-}
 
 Widget atmBillList(List<String> stateString, String descriptionTitle) {
   return Container(
