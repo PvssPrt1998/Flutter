@@ -30,7 +30,6 @@ class ATM {
   List<String> issueBills() {
     var sum = int.tryParse(text);
     if (sum != null) {
-
       if (!isEnoughMoneyInATM(sum)) {
         return [];
       } else {
@@ -40,7 +39,6 @@ class ATM {
   }
 
   List<String> issueBillsHelper(int sum) {
-
     List<Bill> forReturn = [];
     List<Bill> moneyList = [];
     for (var element in bills) {
@@ -75,22 +73,21 @@ class ATM {
 
       moneyList.firstWhere((element) => element.denomination == denomination)
           .amount--;
-      bills.firstWhere((element) => element.denomination == denomination)
-          .amount--;
       if (moneyList.firstWhere((element) => element.denomination == denomination)
           .amount == 0) {
-        var a = moneyList.firstWhere((element) =>
-        element.denomination == denomination);
-        moneyList.remove(a);
-        var b = bills.firstWhere((element) =>
-        element.denomination == denomination);
-        bills.remove(b);
+        moneyList.remove(moneyList.firstWhere((element) =>
+        element.denomination == denomination));
       }
     }
 
     if (issueSum > 0) { return []; }
-
-    return forReturn.map((e) => '${e.denomination} X ${ e.amount }').toList();
+    
+    return forReturn.map((e) {
+      var bill = bills.firstWhere((element) => e.denomination == element.denomination);
+      bill.amount = bill.amount - e.amount;
+      if (bill.amount == 0) { bills.remove(bill); }
+      return '${e.denomination} X ${ e.amount }';
+    }).toList();
   }
 
   int search(List<Bill> list, int sum, int end) {
