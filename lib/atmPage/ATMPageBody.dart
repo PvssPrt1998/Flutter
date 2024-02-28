@@ -1,7 +1,6 @@
 import 'package:atm/ATMBloc.dart';
 import 'package:flutter/material.dart';
 import 'package:atm/atmPage/mainpagecolumns/atmbillslist/atmbillslist.dart';
-import 'package:atm/atmPage/mainpagecolumns/errorMessageForUserItem.dart';
 import 'package:atm/atmPage/mainpagecolumns/ATMIssue/atmissue.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'mainpagecolumns/bottom.dart';
@@ -31,10 +30,6 @@ Widget buildMainBackgroundContainer(BuildContext context, ATMBalanceBloc bloc) {
 
 
 Widget atmCustomScrollView(BuildContext context, ATMBalanceBloc bloc) {
-
-  var factory = IssuedBillsFactory();
-  var a = factory.createErrorMessageProduct();
-  var b = a.createErrorMessageWidget();//bankomat ne mozhet vidat'
 
   return CustomScrollView(
     physics: const ClampingScrollPhysics(),

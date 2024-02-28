@@ -1,17 +1,6 @@
 import 'package:flutter/material.dart';
-import 'widgetFactory.dart';
-
-enum WidgetType { issuedBills, atmBalance }
-
-String errorMessageForUser(WidgetType widgetType) {
-  return widgetType == WidgetType.issuedBills
-      ? 'Банкомат не может выдать запрашиваемую сумму'
-      : 'Банкомат пуст';
-}
-
 
 Widget errorMessageForUserItem(String message) {
-
   return Container(
     height: 128,
     width: double.infinity,

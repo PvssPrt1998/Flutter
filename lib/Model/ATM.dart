@@ -15,32 +15,20 @@ class ATM {
 
   List<String> billsPacksList() {
     return bills.map((bill) =>
-    '${bill.amount.truncate()} X ${bill.denomination.truncate() } рублей').toList();
+    '${bill.amount} X ${bill.denomination } рублей').toList();
   }
   
-  double sumOfBills() {
+  int sumOfBills() {
     return bills.map((bill) => (bill.denomination * bill.amount))
         .reduce((value, element) => value + element);
   }
   
-  bool isEnoughMoneyInATM(double sumForIssuance) {
+  bool isEnoughMoneyInATM(int sumForIssuance) {
     return sumOfBills()>sumForIssuance;
   }
 
-  double denominationByIndex(int index) {
-    return bills[index].denomination;
-  }
-
-  int amountOfBillsByIndex(int index) {
-    return bills[index].amount;
-  }
-
-  bool isATMEmpty() {
-    return bills.isEmpty;
-  }
-
   List<String> issueBills() {
-    var sum = double.tryParse(text);
+    var sum = int.tryParse(text);
     if (sum != null) {
 
       if (!isEnoughMoneyInATM(sum)) {
@@ -51,7 +39,7 @@ class ATM {
     } else { return []; }
   }
 
-  List<String> issueBillsHelper(double sum) {
+  List<String> issueBillsHelper(int sum) {
 
     List<Bill> forReturn = [];
     List<Bill> moneyList = [];
@@ -102,10 +90,10 @@ class ATM {
 
     if (issueSum > 0) { return []; }
 
-    return forReturn.map((e) => '${e.denomination.truncate()} X ${ e.amount.truncate() }').toList();
+    return forReturn.map((e) => '${e.denomination} X ${ e.amount }').toList();
   }
 
-  int search(List<Bill> list, double sum, int end) {
+  int search(List<Bill> list, int sum, int end) {
     if (sum >= list[end].denomination) {
       return end;
     } else {
@@ -115,9 +103,5 @@ class ATM {
         return search(list, sum, end - 1);
       }
     }
-  }
-
-  int amountOfDenominations() {
-    return bills.length;
   }
 }
